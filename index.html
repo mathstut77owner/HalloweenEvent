@@ -5,144 +5,158 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Halloween Event Test</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
+
   body {
-    background: radial-gradient(circle at top, #0a0a0a, #000);
-    color: orange;
-    font-family: 'Poppins', sans-serif;
+    background: radial-gradient(circle at center, #0b0014, #000);
+    color: white;
+    font-family: 'Creepster', cursive;
     text-align: center;
+    margin: 0;
+    height: 100vh;
     overflow: hidden;
   }
+
   h1 {
-    font-size: 3rem;
-    margin-top: 20vh;
-    text-shadow: 0 0 20px orange, 0 0 40px red;
+    font-size: 3em;
+    margin-top: 100px;
+    text-shadow: 0 0 25px orange;
+    animation: flicker 1.5s infinite;
   }
+
+  @keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+      text-shadow: 0 0 25px orange, 0 0 50px red;
+    }
+    20%, 24%, 55% {
+      text-shadow: none;
+    }
+  }
+
   button {
-    background: black;
-    color: orange;
-    border: 2px solid orange;
-    font-size: 1.5rem;
-    padding: 15px 40px;
-    border-radius: 10px;
+    background: linear-gradient(45deg, #ff7300, #ff0044);
+    border: none;
+    padding: 20px 50px;
+    color: white;
+    font-size: 1.5em;
+    border-radius: 12px;
     cursor: pointer;
     box-shadow: 0 0 20px orange;
     transition: 0.3s;
   }
+
   button:hover {
-    background: orange;
-    color: black;
+    transform: scale(1.1);
     box-shadow: 0 0 40px red;
   }
 </style>
 </head>
 <body>
-  <h1>🎃 Halloween Event Tester 🎃</h1>
-  <button id="startEventBtn">Start Halloween Event</button>
 
-  <script>
-  document.getElementById('startEventBtn').addEventListener('click', () => {
-    const eventHTML = `
-    <html>
-    <head>
-      <title>Google</title>
-      <link rel="icon" href="https://www.google.com/favicon.ico">
-      <style>
-        @keyframes lightningFlash {
-          0%, 100% { background: black; }
-          50% { background: white; }
-        }
-        body {
-          margin: 0;
-          background: black;
-          overflow: hidden;
-          height: 100vh;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          position: relative;
-          color: orange;
-          font-family: 'Poppins', sans-serif;
-        }
-        h1 {
-          font-size: 2.5rem;
-          text-shadow: 0 0 20px orange;
-        }
-        .pumpkin-float {
-          position: absolute;
-          width: 80px;
-          animation: floatPumpkins 5s ease-in-out infinite;
-        }
-        @keyframes floatPumpkins {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-15px); }
-        }
-        .door {
-          position: absolute;
-          width: 100px;
-          height: 200px;
-          background: linear-gradient(90deg, #111, #222);
-          border: 4px solid orange;
-          border-radius: 4px;
-          transform-origin: left;
-          transition: transform 2s ease-in-out;
-          cursor: pointer;
-        }
-        .door.open { transform: rotateY(120deg); }
-        .flash { animation: lightningFlash 0.2s ease; }
-      </style>
-    </head>
-    <body>
-      <h1>🎃 Click the Door to Begin 🎃</h1>
+<h1>Halloween Event Test</h1>
+<button id="startEventBtn">Start Halloween Event 🎃</button>
 
-      <!-- Pumpkins -->
-      <img class="pumpkin-float" style="top:10%; left:10%; animation-delay: 0s;"
-        src="https://images.vexels.com/media/users/3/143834/isolated/svg/2c274e2b9fd75ec030525252294d88c1.svg">
-      <img class="pumpkin-float" style="top:20%; right:10%; width:60px; animation-delay: 2s;"
-        src="https://images.vexels.com/media/users/3/143834/isolated/svg/2c274e2b9fd75ec030525252294d88c1.svg">
-      <img class="pumpkin-float" style="bottom:15%; left:30%; width:70px; animation-delay: 4s;"
-        src="https://images.vexels.com/media/users/3/143834/isolated/svg/2c274e2b9fd75ec030525252294d88c1.svg">
+<script>
+document.getElementById('startEventBtn').addEventListener('click', function() {
+  const eventHTML = `
+  <html>
+  <head>
+    <title>Halloween Event</title>
+    <link rel="icon" href="https://www.google.com/favicon.ico">
+    <style>
+      body {
+        margin: 0;
+        background: radial-gradient(circle at center, #0b0014, #000);
+        overflow: hidden;
+      }
+      @keyframes flicker { 
+        0%,19%,21%,23%,25%,54%,56%,100%{opacity:1;} 
+        20%,24%,55%{opacity:0.8;} 
+      }
+      .pumpkin-float {
+        position: absolute;
+        animation: float 6s ease-in-out infinite;
+      }
+      @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-20px); }
+        100% { transform: translateY(0px); }
+      }
+      .door {
+        position: fixed;
+        width: 50%;
+        height: 100%;
+        top: 0;
+        background: #2c1a08;
+        transition: transform 4s ease-in-out;
+        z-index: 100;
+      }
+      .door.left { left: 0; transform-origin: left; }
+      .door.right { right: 0; transform-origin: right; }
+      .door.open.left { transform: rotateY(-100deg); }
+      .door.open.right { transform: rotateY(100deg); }
+      .flash {
+        position: fixed;
+        inset: 0;
+        background: rgba(255,255,255,0.2);
+        animation: flash 6s infinite;
+      }
+      @keyframes flash {
+        0%, 80%, 100% { opacity: 0; }
+        82% { opacity: 1; }
+      }
+    </style>
+  </head>
+  <body>
+    <img class="pumpkin-float" style="top:10%; left:10%; animation-delay: 0s;"
+      src="https://images.vexels.com/media/users/3/143834/isolated/svg/2c274e2b9fd75ec030525252294d88c1.svg">
+    <img class="pumpkin-float" style="top:20%; right:10%; width:60px; animation-delay: 2s;"
+      src="https://images.vexels.com/media/users/3/143834/isolated/svg/2c274e2b9fd75ec030525252294d88c1.svg">
+    <img class="pumpkin-float" style="bottom:15%; left:30%; width:70px; animation-delay: 4s;"
+      src="https://images.vexels.com/media/users/3/143834/isolated/svg/2c274e2b9fd75ec030525252294d88c1.svg">
 
-      <!-- Door -->
-      <div class="door" id="door"></div>
+    <div class="door left"></div>
+    <div class="door right"></div>
 
-      <!-- Audio -->
-      <audio id="bgm" loop src="https://drive.google.com/uc?export=preview&id=1_CG378RwQO3Powipw1syFYRb8wvkuRAM"></audio>
-      <audio id="thunder" src="https://drive.google.com/uc?export=preview&id=1vADO7UdKSYgjrzgvdbOpTKQ5rZnw2ZDr"></audio>
-      <audio id="creak" src="https://drive.google.com/uc?export=preview&id=1zJVVRWSePNFM3fG8jUN6LCcuVqsh0jCe"></audio>
+    <div class="flash"></div>
 
-      <script>
-      const door = document.getElementById('door');
+    <audio id="bgm" loop src="https://drive.google.com/uc?export=preview&id=1_CG378RwQO3Powipw1syFYRb8wvkuRAM"></audio>
+    <audio id="thunder" src="https://drive.google.com/uc?export=preview&id=1vADO7UdKSYgjrzgvdbOpTKQ5rZnw2ZDr"></audio>
+    <audio id="creak" src="https://drive.google.com/uc?export=preview&id=1zJVVRWSePNFM3fG8jUN6LCcuVqsh0jCe"></audio>
+
+    <script>
       const bgm = document.getElementById('bgm');
       const thunder = document.getElementById('thunder');
       const creak = document.getElementById('creak');
 
-      door.addEventListener('click', () => {
-        door.classList.add('open');
-        creak.play();
-        setTimeout(() => {
-          bgm.volume = 0.5;
-          bgm.play();
-        }, 1000);
-        setInterval(() => {
-          document.body.classList.add('flash');
-          thunder.currentTime = 0;
-          thunder.play();
-          setTimeout(() => document.body.classList.remove('flash'), 200);
-        }, 10000);
-      });
-      </script>
-    </body>
-    </html>`;
+      bgm.volume = 0.5;
+      bgm.play().catch(() => console.log("Autoplay blocked until user interacts."));
 
-    const newTab = window.open("about:blank", "_blank");
-    if (newTab) {
-      newTab.document.open();
-      newTab.document.write(eventHTML);
-      newTab.document.close();
-    } else {
-      alert("Popup blocked. Please allow popups for this site.");
-    }
-  });
-  </script>
+      setTimeout(() => {
+        document.querySelector('.door.left').classList.add('open');
+        document.querySelector('.door.right').classList.add('open');
+        creak.play();
+      }, 2000);
+
+      setInterval(() => {
+        thunder.volume = 0.7;
+        thunder.currentTime = 0;
+        thunder.play();
+      }, 10000);
+    <\/script>
+  </body>
+  </html>`;
+
+  const newTab = window.open('about:blank', '_blank');
+  if (newTab) {
+    newTab.document.open();
+    newTab.document.write(eventHTML);
+    newTab.document.close();
+  } else {
+    alert("Popup blocked! Please allow popups for this site.");
+  }
+});
+</script>
+
 </body>
 </html>
