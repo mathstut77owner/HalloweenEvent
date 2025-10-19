@@ -5,158 +5,170 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Halloween Event Test</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Creepster&display=swap');
-
   body {
-    background: radial-gradient(circle at center, #0b0014, #000);
-    color: white;
-    font-family: 'Creepster', cursive;
-    text-align: center;
     margin: 0;
-    height: 100vh;
     overflow: hidden;
-  }
-
-  h1 {
-    font-size: 3em;
-    margin-top: 100px;
-    text-shadow: 0 0 25px orange;
-    animation: flicker 1.5s infinite;
-  }
-
-  @keyframes flicker {
-    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-      text-shadow: 0 0 25px orange, 0 0 50px red;
-    }
-    20%, 24%, 55% {
-      text-shadow: none;
-    }
+    background: radial-gradient(circle at center, #0a0015 0%, #000 100%);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #ff7518;
+    font-family: "Poppins", sans-serif;
   }
 
   button {
-    background: linear-gradient(45deg, #ff7300, #ff0044);
+    background: linear-gradient(45deg, #ff7518, #ff3c00);
     border: none;
-    padding: 20px 50px;
     color: white;
-    font-size: 1.5em;
+    padding: 15px 40px;
+    font-size: 1.5rem;
     border-radius: 12px;
     cursor: pointer;
-    box-shadow: 0 0 20px orange;
-    transition: 0.3s;
+    box-shadow: 0 0 20px rgba(255, 100, 0, 0.6);
+    transition: all 0.3s;
+    z-index: 10;
+  }
+  button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(255, 120, 0, 0.9);
   }
 
-  button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 40px red;
+  .door {
+    position: relative;
+    width: 220px;
+    height: 400px;
+    background: #1a0000;
+    border: 4px solid #4b1a00;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+
+  .door-left, .door-right {
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(to bottom, #3a0f00, #1a0000);
+    transform-origin: left center;
+    transition: transform 2s ease-in-out;
+  }
+
+  .door-right {
+    left: 50%;
+    transform-origin: right center;
+  }
+
+  .door.open .door-left {
+    transform: rotateY(-100deg);
+  }
+
+  .door.open .door-right {
+    transform: rotateY(100deg);
+  }
+
+  .pumpkin {
+    position: absolute;
+    width: 120px;
+    bottom: 30px;
+    left: calc(50% - 60px);
+    opacity: 0;
+    transition: opacity 2s ease-in-out;
+  }
+
+  .door.open + .pumpkin {
+    opacity: 1;
+  }
+
+  /* Floating pumpkins */
+  .pumpkin-float {
+    position: absolute;
+    width: 80px;
+    animation: float 5s ease-in-out infinite;
+    opacity: 0.8;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-15px); }
+  }
+
+  /* Lightning flash effect */
+  .flash {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: white;
+    opacity: 0;
+    z-index: 5;
+    pointer-events: none;
+    animation: flash 3s infinite ease-in-out;
+  }
+
+  @keyframes flash {
+    0%, 95%, 100% { opacity: 0; }
+    97% { opacity: 0.6; }
   }
 </style>
 </head>
 <body>
 
-<h1>Halloween Event Test</h1>
-<button id="startEventBtn">Start Halloween Event 🎃</button>
+<button id="startBtn">🎃 Start Halloween Event 🎃</button>
+
+<div class="door" id="door">
+  <div class="door-left"></div>
+  <div class="door-right"></div>
+</div>
+
+<img src="https://images.vexels.com/media/users/3/143834/isolated/svg/2c274e2b9fd75ec030525252294d88c1.svg" 
+     class="pumpkin" id="mainPumpkin">
+
+<!-- Floating pumpkins -->
+<img class="pumpkin-float" style="top:10%; left:10%; animation-delay: 0s;"
+     src="https://images.vexels.com/media/users/3/143834/isolated/svg/2c274e2b9fd75ec030525252294d88c1.svg">
+<img class="pumpkin-float" style="top:20%; right:10%; width:60px; animation-delay: 2s;"
+     src="https://images.vexels.com/media/users/3/143834/isolated/svg/2c274e2b9fd75ec030525252294d88c1.svg">
+<img class="pumpkin-float" style="bottom:15%; left:30%; width:70px; animation-delay: 4s;"
+     src="https://images.vexels.com/media/users/3/143834/isolated/svg/2c274e2b9fd75ec030525252294d88c1.svg">
+
+<div class="flash"></div>
+
+<!-- 🎵 Audio Elements (replace with your own) -->
+<audio id="bgMusic" src="https://drive.google.com/uc?export=download&id=1_CG378RwQO3Powipw1syFYRb8wvkuRAM" loop></audio>
+<audio id="thunder" src="https://drive.google.com/uc?export=download&id=1vADO7UdKSYgjrzgvdbOpTKQ5rZnw2ZDr"></audio>
+<audio id="doorCreak" src="https://drive.google.com/uc?export=download&id=1zJVVRWSePNFM3fG8jUN6LCcuVqsh0jCe"></audio>
 
 <script>
-document.getElementById('startEventBtn').addEventListener('click', function() {
-  const eventHTML = `
-  <html>
-  <head>
-    <title>Halloween Event</title>
-    <link rel="icon" href="https://www.google.com/favicon.ico">
-    <style>
-      body {
-        margin: 0;
-        background: radial-gradient(circle at center, #0b0014, #000);
-        overflow: hidden;
-      }
-      @keyframes flicker { 
-        0%,19%,21%,23%,25%,54%,56%,100%{opacity:1;} 
-        20%,24%,55%{opacity:0.8;} 
-      }
-      .pumpkin-float {
-        position: absolute;
-        animation: float 6s ease-in-out infinite;
-      }
-      @keyframes float {
-        0% { transform: translateY(0px); }
-        50% { transform: translateY(-20px); }
-        100% { transform: translateY(0px); }
-      }
-      .door {
-        position: fixed;
-        width: 50%;
-        height: 100%;
-        top: 0;
-        background: #2c1a08;
-        transition: transform 4s ease-in-out;
-        z-index: 100;
-      }
-      .door.left { left: 0; transform-origin: left; }
-      .door.right { right: 0; transform-origin: right; }
-      .door.open.left { transform: rotateY(-100deg); }
-      .door.open.right { transform: rotateY(100deg); }
-      .flash {
-        position: fixed;
-        inset: 0;
-        background: rgba(255,255,255,0.2);
-        animation: flash 6s infinite;
-      }
-      @keyframes flash {
-        0%, 80%, 100% { opacity: 0; }
-        82% { opacity: 1; }
-      }
-    </style>
-  </head>
-  <body>
-    <img class="pumpkin-float" style="top:10%; left:10%; animation-delay: 0s;"
-      src="https://images.vexels.com/media/users/3/143834/isolated/svg/2c274e2b9fd75ec030525252294d88c1.svg">
-    <img class="pumpkin-float" style="top:20%; right:10%; width:60px; animation-delay: 2s;"
-      src="https://images.vexels.com/media/users/3/143834/isolated/svg/2c274e2b9fd75ec030525252294d88c1.svg">
-    <img class="pumpkin-float" style="bottom:15%; left:30%; width:70px; animation-delay: 4s;"
-      src="https://images.vexels.com/media/users/3/143834/isolated/svg/2c274e2b9fd75ec030525252294d88c1.svg">
+const startBtn = document.getElementById("startBtn");
+const door = document.getElementById("door");
+const bgMusic = document.getElementById("bgMusic");
+const thunder = document.getElementById("thunder");
+const doorCreak = document.getElementById("doorCreak");
 
-    <div class="door left"></div>
-    <div class="door right"></div>
+startBtn.addEventListener("click", () => {
+  // Start all audio (user gesture allows playback)
+  bgMusic.volume = 0.6;
+  bgMusic.play().catch(e => console.warn("Background music blocked:", e));
 
-    <div class="flash"></div>
+  // Thunder periodically
+  setInterval(() => {
+    thunder.currentTime = 0;
+    thunder.volume = 0.7;
+    thunder.play().catch(()=>{});
+  }, 10000);
 
-    <audio id="bgm" loop src="https://drive.google.com/uc?export=preview&id=1_CG378RwQO3Powipw1syFYRb8wvkuRAM"></audio>
-    <audio id="thunder" src="https://drive.google.com/uc?export=preview&id=1vADO7UdKSYgjrzgvdbOpTKQ5rZnw2ZDr"></audio>
-    <audio id="creak" src="https://drive.google.com/uc?export=preview&id=1zJVVRWSePNFM3fG8jUN6LCcuVqsh0jCe"></audio>
+  // Door opening animation
+  setTimeout(() => {
+    door.classList.add("open");
+    doorCreak.volume = 1;
+    doorCreak.play().catch(()=>{});
+  }, 3000);
 
-    <script>
-      const bgm = document.getElementById('bgm');
-      const thunder = document.getElementById('thunder');
-      const creak = document.getElementById('creak');
-
-      bgm.volume = 0.5;
-      bgm.play().catch(() => console.log("Autoplay blocked until user interacts."));
-
-      setTimeout(() => {
-        document.querySelector('.door.left').classList.add('open');
-        document.querySelector('.door.right').classList.add('open');
-        creak.play();
-      }, 2000);
-
-      setInterval(() => {
-        thunder.volume = 0.7;
-        thunder.currentTime = 0;
-        thunder.play();
-      }, 10000);
-    <\/script>
-  </body>
-  </html>`;
-
-  const newTab = window.open('about:blank', '_blank');
-  if (newTab) {
-    newTab.document.open();
-    newTab.document.write(eventHTML);
-    newTab.document.close();
-  } else {
-    alert("Popup blocked! Please allow popups for this site.");
-  }
+  // Hide button
+  startBtn.style.display = "none";
 });
 </script>
-
 </body>
 </html>
